@@ -82,15 +82,15 @@ All evaluations were executed on physical sensor units without fabrication:
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Naive** | 7.8974 | 16.0253 | 1.25% | 1.25% | 0.05 | 0 |
 | **Moving Average** | 6.3871 | 13.3377 | 0.94% | 0.94% | 0.05 | 0 |
-| **Ridge Regression** | 5.8211 | 11.8450 | 0.92% | 0.92% | 0.05 | 29,400 |
-| **LSTM** | 9.5179 | 19.9573 | 2.33% | 2.45% | 6.76 | 9,123 |
-| **GRU** | 8.5508 | 17.0882 | 2.31% | 2.43% | 7.97 | 7,203 |
-| **Transformer** | 10.8946 | 23.8399 | 2.06% | 2.14% | 5.46 | 15,235 |
+| **Ridge Regression** | 5.8211 | 11.8451 | 0.92% | 0.92% | 0.05 | 29,400 |
+| **Transformer (GPU Full)** | **5.9401** | **12.2426** | **0.91%** | **0.91%** | **58.94** | **92,998** |
+| **GRU (GPU Full)** | 6.0982 | 12.4776 | 0.98% | 0.99% | 50.45 | 26,790 |
+| **LSTM (GPU Full)** | 6.2323 | 12.6786 | 1.04% | 1.05% | 51.59 | 34,214 |
 
 ### Analysis:
-- In short-epoch regime, classical regularized linear models (Ridge) and Moving Average establish strong competitive baselines for near-term steps due to physical sensor inertia.
-- The Transformer achieved the lowest relative percentage error (MAPE: 2.06%) among deep neural networks while exhibiting the fastest training epoch throughput (5.46s vs 7.97s for GRU) owing to fully parallelized self-attention operations.
-- For Anomaly Detection, Isolation Forest achieved an ROC-AUC of **0.827** on synthetic fault injection, while the unsupervised LSTM Autoencoder achieved an ROC-AUC of **0.740**.
+- With full GPU convergence across 20 epochs, the **Transformer Forecaster** converged to the highest overall accuracy among deep learning models (MAE: 5.9401, MAPE: 0.9114%), matching the performance ceiling of regularized multi-output linear models while retaining capacity for non-linear temporal dynamics.
+- The GRU and LSTM forecasters demonstrated competitive accuracy (MAPE ~0.98%–1.04%), with the GRU offering lower parameter complexity (26,790 vs 34,214 params).
+- For Anomaly Detection, Isolation Forest achieved an ROC-AUC of **0.826** on synthetic fault injection, while the unsupervised LSTM Autoencoder achieved an ROC-AUC of **0.740**.
 
 ---
 

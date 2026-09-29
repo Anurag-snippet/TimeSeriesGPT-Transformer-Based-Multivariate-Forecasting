@@ -21,3 +21,4 @@ data/raw/*.tar.gz
 # Checkpoints / large binaries
 artifacts/checkpoints/*.keras
 artifacts/checkpoints/*.h5
+*.zip

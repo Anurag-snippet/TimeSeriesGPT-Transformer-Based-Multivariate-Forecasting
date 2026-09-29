@@ -20,7 +20,12 @@ logger = setup_logger("PredictScript")
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Predict future sensor values using trained model.")
-    parser.add_argument("--model_path", type=str, default="artifacts/checkpoints/transformer_quick_final.keras")
+    default_model = (
+        "artifacts/checkpoints/transformer_full_final.keras"
+        if Path("artifacts/checkpoints/transformer_full_final.keras").exists()
+        else "artifacts/checkpoints/transformer_quick_final.keras"
+    )
+    parser.add_argument("--model_path", type=str, default=default_model)
     parser.add_argument("--sample_index", type=int, default=0, help="Index of sample in test set to predict")
     return parser.parse_args()
 
@@ -57,7 +62,7 @@ def main():
         "PositionalEncoding": PositionalEncoding,
         "TransformerEncoder": TransformerEncoder,
     }
-    model = tf.keras.models.load_model(args.model_path, custom_objects=custom_objects)
+    model = tf.keras.models.load_model(args.model_path, custom_objects=custom_objects, safe_mode=False)
 
     sample_x = X_test[args.sample_index : args.sample_index + 1]
     sample_y = y_test[args.sample_index : args.sample_index + 1]
