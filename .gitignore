@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.ipynb_checkpoints/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.venv/
+env/
+venv/
+*.log
+
+# Data (Never commit large raw data)
+data/raw/*.parquet
+data/raw/*.zip
+data/raw/*.tar.gz
+
+# Checkpoints / large binaries
+artifacts/checkpoints/*.keras
+artifacts/checkpoints/*.h5

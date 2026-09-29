@@ -1,0 +1,76 @@
+# Reproducibility
+seed: 42
+
+# Data Configuration
+data:
+  dataset_name: "turbofan_sensor_telemetry"
+  raw_path: "data/raw/sensor_telemetry.csv"
+  processed_path: "data/processed/sensor_telemetry_clean.csv"
+  train_split: 0.70
+  val_split: 0.15
+  test_split: 0.15
+  timestamp_col: "timestamp"
+  # Target sensor features (actual industrial sensors: temperatures, pressures, vibration, RPM/speed)
+  feature_cols:
+    - "T24_combustor_inlet_temp"
+    - "T30_hpt_coolant_temp"
+    - "T50_lpt_outlet_temp"
+    - "P30_hpc_outlet_pressure"
+    - "Nf_fan_speed_rpm"
+    - "Nc_core_speed_rpm"
+    - "vib_vibration_amplitude"
+  input_window: 60
+  forecast_horizon: 10
+  stride: 1
+
+# Training Configurations
+training:
+  batch_size: 32
+  epochs: 25
+  learning_rate: 0.001
+  early_stopping_patience: 7
+  reduce_lr_patience: 3
+  reduce_lr_factor: 0.5
+  min_lr: 0.00001
+  loss: "mse"
+  metrics: ["mae"]
+
+# Quick Training Mode (for rapid CPU validation)
+quick_training:
+  subset_samples: 3000
+  batch_size: 16
+  epochs: 3
+  input_window: 30
+  forecast_horizon: 5
+
+# Model Hyperparameters
+models:
+  lstm:
+    units: [64, 32]
+    dropout: 0.2
+    recurrent_dropout: 0.0
+
+  gru:
+    units: [64, 32]
+    dropout: 0.2
+    recurrent_dropout: 0.0
+
+  transformer:
+    d_model: 64
+    num_heads: 4
+    ff_dim: 128
+    num_layers: 2
+    dropout: 0.1
+
+  anomaly_autoencoder:
+    latent_dim: 16
+    units: [32, 16]
+    dropout: 0.1
+    threshold_percentile: 97.5
+
+# Artifact Directories
+artifacts:
+  checkpoints_dir: "artifacts/checkpoints"
+  scalers_dir: "artifacts/scalers"
+  predictions_dir: "artifacts/predictions"
+  results_csv: "experiments/results.csv"
